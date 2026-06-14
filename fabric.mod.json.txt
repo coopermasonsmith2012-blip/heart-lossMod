@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "heartloss",
+  "version": "1.0.0",
+  "name": "Heart Loss Mod",
+  "entrypoints": {
+    "main": [
+      "com.example.heartloss.HeartLossMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~1.21"
+  }
+}
