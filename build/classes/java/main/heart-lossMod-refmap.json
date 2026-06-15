@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "com/example/heartloss/mixin/ServerPlayerEntityMixin": {
+      "readCustomDataFromNbt": "Lnet/minecraft/class_3222;method_5749(Lnet/minecraft/class_2487;)V",
+      "writeCustomDataToNbt": "Lnet/minecraft/class_3222;method_5652(Lnet/minecraft/class_2487;)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/example/heartloss/mixin/ServerPlayerEntityMixin": {
+        "readCustomDataFromNbt": "Lnet/minecraft/class_3222;method_5749(Lnet/minecraft/class_2487;)V",
+        "writeCustomDataToNbt": "Lnet/minecraft/class_3222;method_5652(Lnet/minecraft/class_2487;)V"
+      }
+    }
+  }
+}

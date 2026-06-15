@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "heartloss",
+  "version": "1.0.0",
+  "name": "Heart Loss Mod",
+  "description": "Players lose hearts on death and can steal hearts from others.",
+  "authors": [
+    "Cooper",
+    "Gemini"
+  ],
+  "entrypoints": {
+    "main": [
+      "com.example.heartloss.HeartLossMod"
+    ]
+  },
+  "mixins": [
+    "heartloss.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "26.1.2",
+    "fabric-api": "*"
+  }
+}

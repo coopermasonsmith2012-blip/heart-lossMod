@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "k": {
+      "item": "minecraft:trial_key"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "e": {
+      "item": "minecraft:emerald_block"
+    }
+  },
+  "pattern": [
+    "kdk",
+    "ded",
+    "kdk"
+  ],
+  "result": {
+    "count": 1,
+    "item": "heartloss:heart"
+  }
+}
