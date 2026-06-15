@@ -8,10 +8,13 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -50,7 +53,7 @@ public class HeartLossMod implements ModInitializer {
     public void onInitialize() {
         Registry.register(Registries.ITEM, Identifier.of(MOD_ID, "heart"), HEART_ITEM);
 
-        // /withdraw command for 26.1.2
+        // /withdraw command
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(CommandManager.literal("withdraw")
                 .then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
@@ -124,5 +127,38 @@ public class HeartLossMod implements ModInitializer {
                 world.spawnEntity(heartDrop);
             }
         });
+    }
+
+    /**
+     * Anti-Stash Monitor: This helper method is designed to be checked whenever an inventory menu updates.
+     * It scans container slots and ejects any hearts back into the player's main inventory.
+     */
+    public static void handleInventoryValidation(ServerPlayerEntity player) {
+        // If the player is just looking at their own inventory screen, ignore checks
+        if (player.currentScreenHandler instanceof PlayerScreenHandler) {
+            return;
+        }
+
+        // Loop through every slot in the open menu screen
+        for (Slot slot : player.currentScreenHandler.slots) {
+            Inventory inventory = slot.inventory;
+            
+            // Check if the slot belongs to an external container (NOT the player's inventory)
+            if (inventory != player.getInventory()) {
+                ItemStack stackInSlot = slot.getStack();
+                
+                // If a heart is found inside a storage block container slot, force it back out
+                if (stackInSlot.isOf(HEART_ITEM)) {
+                    slot.setStack(ItemStack.EMPTY); // Clear the storage block slot
+                    
+                    // Try to safely put it back in the player's personal inventory
+                    if (!player.getInventory().insertStack(stackInSlot)) {
+                        player.dropItem(stackInSlot, false); // Drop on ground if player inventory is full
+                    }
+                    player.sendMessage(Text.literal("§cYou cannot stash hearts in containers!"), true);
+                    player.currentScreenHandler.sendContentUpdates();
+                }
+            }
+        }
     }
 }
